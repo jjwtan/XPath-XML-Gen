@@ -1,8 +1,6 @@
-package main;
+package com.jjwtan;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class XPathTreeBuilder {
 
@@ -50,19 +48,28 @@ public class XPathTreeBuilder {
     }
 
     private SimpleNode parseSubPath(String subPath) {
+        if(!subPath.contains(":")) {
+            return new SimpleNode.SimpleNodeBuilder(subPath).build();
+        }
         String[] path = subPath.trim().split(":");
         return new SimpleNode.SimpleNodeBuilder(path[1])
                 .nameSpace(path[0])
                 .build();
     }
 
-    private SimpleNode createNode(String name) {
-        SimpleNode result = new SimpleNode.SimpleNodeBuilder(name)
-                .nameSpace("scb:")
-                .attribute("href")
-                .build();
 
-        return result;
+    public void getTreeOutput() {
+        Queue<SimpleNode> queue = new LinkedList<>();
+        queue.add(nodeTree);
+        while(!queue.isEmpty()) {
+            SimpleNode node = queue.poll();
+            System.out.println(node.getNodeName());
+            if(node.getChildren()!= null) {
+                for(SimpleNode n:node.getChildren()) {
+                    queue.add(n);
+                }
+            }
+        }
     }
 
     public SimpleNode getNodeTree() {
