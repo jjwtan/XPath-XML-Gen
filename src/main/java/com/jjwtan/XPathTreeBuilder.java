@@ -59,17 +59,19 @@ public class XPathTreeBuilder {
 
 
     public void getTreeOutput() {
-        Queue<SimpleNode> queue = new LinkedList<>();
-        queue.add(nodeTree);
-        while(!queue.isEmpty()) {
-            SimpleNode node = queue.poll();
-            System.out.println(node.getNodeName());
-            if(node.getChildren()!= null) {
-                for(SimpleNode n:node.getChildren()) {
-                    queue.add(n);
-                }
+        recursiveIteration(nodeTree);
+    }
+
+    public static void recursiveIteration(SimpleNode node) {
+        System.out.println(node.getNodeName());
+
+        if (node.getChildren() != null) {
+            for (SimpleNode child : node.getChildren()) {
+                recursiveIteration(child);
             }
         }
+
+        System.out.println("/" + node.getNodeName());
     }
 
     public SimpleNode getNodeTree() {
